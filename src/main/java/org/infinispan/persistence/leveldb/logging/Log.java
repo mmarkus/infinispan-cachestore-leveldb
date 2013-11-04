@@ -1,6 +1,6 @@
 package org.infinispan.persistence.leveldb.logging;
 
-import org.infinispan.persistence.CacheLoaderException;
+import org.infinispan.persistence.spi.PersistenceException;
 import org.jboss.logging.Cause;
 import org.jboss.logging.LogMessage;
 import org.jboss.logging.Message;
@@ -43,5 +43,5 @@ public interface Log extends org.infinispan.util.logging.Log {
    void infoUsingJavaDbFactory(String className);
 
    @Message(value = "Could not load any LevelDB Factories: : %s", id = 23007)
-   CacheLoaderException cannotLoadlevelDBFactories(String formattedArrayOfClassNames);
+   PersistenceException cannotLoadlevelDBFactories(String formattedArrayOfClassNames);
 }

@@ -11,7 +11,7 @@ import org.infinispan.persistence.leveldb.configuration.LevelDBStoreConfiguratio
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.marshall.core.MarshalledEntryFactoryImpl;
 import org.infinispan.persistence.BaseStoreTest;
-import org.infinispan.persistence.CacheLoaderException;
+import org.infinispan.persistence.spi.PersistenceException;
 import org.infinispan.persistence.DummyInitializationContext;
 import org.infinispan.persistence.spi.AdvancedLoadWriteStore;
 import org.infinispan.test.TestingUtil;
@@ -59,7 +59,7 @@ public class LevelDBStoreTest extends BaseStoreTest {
 
    @AfterMethod
    @Override
-   public void tearDown() throws CacheLoaderException {
+   public void tearDown() throws PersistenceException {
       super.tearDown();
       TestingUtil.killCacheManagers(cacheManager);
    }

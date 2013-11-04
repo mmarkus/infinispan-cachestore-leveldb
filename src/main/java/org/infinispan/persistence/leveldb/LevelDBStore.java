@@ -5,7 +5,7 @@ import org.infinispan.commons.util.Util;
 import org.infinispan.executors.ExecutorAllCompletionService;
 import org.infinispan.marshall.core.MarshalledEntry;
 import org.infinispan.metadata.InternalMetadata;
-import org.infinispan.persistence.CacheLoaderException;
+import org.infinispan.persistence.spi.PersistenceException;
 import org.infinispan.persistence.PersistenceUtil;
 import org.infinispan.persistence.TaskContextImpl;
 import org.infinispan.persistence.leveldb.configuration.LevelDBStoreConfiguration;
@@ -218,7 +218,7 @@ public class LevelDBStore implements AdvancedLoadWriteStore {
          try {
             reinitAllDatabases();
          } catch (IOException e) {
-            throw new CacheLoaderException(e);
+            throw new PersistenceException(e);
          }
       }
    }
@@ -233,7 +233,7 @@ public class LevelDBStore implements AdvancedLoadWriteStore {
       try {
          return load(key) != null;
       } catch (Exception e) {
-         throw new CacheLoaderException(e);
+         throw new PersistenceException(e);
       }
    }
 
@@ -263,10 +263,10 @@ public class LevelDBStore implements AdvancedLoadWriteStore {
 
          eacs.waitUntilAllCompleted();
          if (eacs.isExceptionThrown()) {
-            throw new CacheLoaderException("Execution exception!", eacs.getFirstException());
+            throw new PersistenceException("Execution exception!", eacs.getFirstException());
          }
       } catch (Exception e) {
-         throw new CacheLoaderException(e);
+         throw new PersistenceException(e);
       } finally {
          try {
             it.close();
@@ -314,7 +314,7 @@ public class LevelDBStore implements AdvancedLoadWriteStore {
          db.delete(keyBytes);
          return true;
       } catch (Exception e) {
-         throw new CacheLoaderException(e);
+         throw new PersistenceException(e);
       }
    }
 
@@ -343,7 +343,7 @@ public class LevelDBStore implements AdvancedLoadWriteStore {
          }
          return me;
       } catch (Exception e) {
-         throw new CacheLoaderException(e);
+         throw new PersistenceException(e);
       }
    }
 
@@ -418,7 +418,7 @@ public class LevelDBStore implements AdvancedLoadWriteStore {
             if (count != 0)
                log.debugf("purged %d entries", count);
          } catch (Exception e) {
-            throw new CacheLoaderException(e);
+            throw new PersistenceException(e);
          } finally {
             try {
                it.close();
@@ -426,10 +426,10 @@ public class LevelDBStore implements AdvancedLoadWriteStore {
                log.warnUnableToCloseDbIterator(e);
             }
          }
-      } catch (CacheLoaderException e) {
+      } catch (PersistenceException e) {
          throw e;
       } catch (Exception e) {
-         throw new CacheLoaderException(e);
+         throw new PersistenceException(e);
       }
    }
 
